@@ -4,7 +4,8 @@
 # style:   repertory  one row per film per run of dates, with showtimes
 #          weekly     one row per film for the week, no showtimes (first-run chains)
 # manual:  the site can't be read automatically (it blocks automated visitors, or
-#          posts its calendar only on social media); listed in the weekly summary instead.
+#          posts its calendar only on social media); gets a row on the sheet's Manual tab each week.
+# why:     the reason shown on the Manual tab
 
 - venue: The New Beverly
   parser: newbev
@@ -132,26 +133,28 @@
 # Not listed on landmarktheatres.com as of October 2026.
 - venue: Landmark Pasadena
   manual: true
+  why: Not listed on Landmark's site anymore (may have closed)
   urls: ["https://www.landmarktheatres.com/"]
 
 - venue: Landmark Sunset
   manual: true
+  why: Not listed on Landmark's site anymore (may have closed)
   urls: ["https://www.landmarktheatres.com/"]
 
 # These sites turn away automated visitors, so they stay on the by-hand list.
-- {venue: AMC Burbank 16, manual: true, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-burbank-16"]}
-- {venue: AMC Burbank Town Center 8, manual: true, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-burbank-town-center-8"]}
-- {venue: AMC Burbank Town Center 6, manual: true, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-burbank-town-center-6"]}
-- {venue: AMC The Americana at Brand 18, manual: true, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-the-americana-at-brand-18"]}
-- {venue: AMC The Grove 14, manual: true, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-the-grove-14"]}
-- {venue: AMC Universal Citywalk, manual: true, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-universal-citywalk-hollywood-19-imax"]}
-- {venue: Lumiere, manual: true, urls: ["https://www.lumierecinemala.com/"]}
-- {venue: Braindead, manual: true, urls: ["https://www.instagram.com/braindeadstudios/"]}
+- {venue: AMC Burbank 16, manual: true, why: Site blocks automated visits, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-burbank-16"]}
+- {venue: AMC Burbank Town Center 8, manual: true, why: Site blocks automated visits, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-burbank-town-center-8"]}
+- {venue: AMC Burbank Town Center 6, manual: true, why: Site blocks automated visits, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-burbank-town-center-6"]}
+- {venue: AMC The Americana at Brand 18, manual: true, why: Site blocks automated visits, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-the-americana-at-brand-18"]}
+- {venue: AMC The Grove 14, manual: true, why: Site blocks automated visits, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-the-grove-14"]}
+- {venue: AMC Universal Citywalk, manual: true, why: Site blocks automated visits, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-universal-citywalk-hollywood-19-imax"]}
+- {venue: Lumiere, manual: true, why: Site blocks automated visits, urls: ["https://www.lumierecinemala.com/"]}
+- {venue: Braindead, manual: true, why: Schedule is only on Instagram, urls: ["https://www.instagram.com/braindeadstudios/"]}
 
 # Small venues that post irregularly.
-- {venue: Whammy, manual: true, urls: ["https://www.whammyanalog.com/whammy-events"]}
-- {venue: Mezzanine, manual: true, urls: ["https://www.instagram.com/mezzanine.la/"]}
-- {venue: Lightstruck, manual: true, urls: ["https://www.lightstruck.org/"]}
-- {venue: Now Instant Image Hall, manual: true, urls: ["https://www.nowinstant.com/"]}
-- {venue: The Philosophical Research Society, manual: true, urls: ["https://www.prs.org/events"]}
-- {venue: The Hollywood Roosevelt Hotel, manual: true, urls: ["https://www.thehollywoodroosevelt.com/"]}
+- {venue: Whammy, manual: true, why: Small venue that posts irregularly, urls: ["https://www.whammyanalog.com/whammy-events"]}
+- {venue: Mezzanine, manual: true, why: Schedule is only on Instagram, urls: ["https://www.instagram.com/mezzanine.la/"]}
+- {venue: Lightstruck, manual: true, why: Small venue that posts irregularly, urls: ["https://www.lightstruck.org/"]}
+- {venue: Now Instant Image Hall, manual: true, why: Small venue that posts irregularly, urls: ["https://www.nowinstant.com/"]}
+- {venue: The Philosophical Research Society, manual: true, why: Small venue that posts irregularly, urls: ["https://www.prs.org/events"]}
+- {venue: The Hollywood Roosevelt Hotel, manual: true, why: Small venue that posts irregularly, urls: ["https://www.thehollywoodroosevelt.com/"]}

@@ -1,4 +1,5 @@
-"""python -m tinseltown run [--start YYYY-MM-DD] [--only VENUE ...] [--dry-run]"""
+"""python -m tinseltown run [--start YYYY-MM-DD] [--only VENUE ...] [--dry-run]
+python -m tinseltown sync   (copy filled-in rows from the Manual tab into Screenings)"""
 import argparse
 import csv
 import datetime as dt
@@ -25,7 +26,14 @@ def main(argv=None) -> int:
     run.add_argument("--start", type=dt.date.fromisoformat, help="first day of the week (default: this Friday)")
     run.add_argument("--only", nargs="*", default=[], help="venue names to limit the run to")
     run.add_argument("--dry-run", action="store_true", help="write the CSV but not the sheet")
+    sub.add_parser("sync", help="copy filled-in Manual rows into Screenings")
     args = parser.parse_args(argv)
+
+    if args.cmd == "sync":
+        from .sheet import ManualSheet, TrackerSheet
+        tracker = TrackerSheet(os.environ["SHEET_ID"], os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"])
+        print(f"{ManualSheet(tracker).sync()} manual rows copied into Screenings")
+        return 0
 
     from .fetch import PageFetcher
     from .model import merge
@@ -62,8 +70,17 @@ def main(argv=None) -> int:
 
     added = None
     if not args.dry_run and os.environ.get("SHEET_ID") and os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON"):
-        from .sheet import TrackerSheet
-        added = TrackerSheet(os.environ["SHEET_ID"], os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"]).append_new(rows)
+        from .sheet import ManualSheet, TrackerSheet
+        tracker = TrackerSheet(os.environ["SHEET_ID"], os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"])
+        added = tracker.append_new(rows)
+        # Venues to fill in by hand this week: the ones we never read, plus any whose site broke.
+        by_name = {v["venue"]: v for v in venues}
+        todo = [(v["venue"], v["urls"][0], v.get("why", "Site can't be read automatically")) for v in manual]
+        todo += [(name, by_name[name]["urls"][0], f"Automatic collection failed this week ({err.split(':')[0]})")
+                 for name, _, err in report if err]
+        manual_tab = ManualSheet(tracker)
+        manual_tab.add_week(start.isoformat(), todo)
+        manual_tab.sync()
 
     summary = [f"## Listings for the week of {start:%B %-d, %Y}", ""]
     summary.append(f"{len(rows)} screenings collected" +

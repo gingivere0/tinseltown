@@ -2,7 +2,10 @@
 import json
 
 import gspread
+import gspread.utils
 from google.oauth2.service_account import Credentials
+
+from .model import COLUMNS
 
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
@@ -67,3 +70,69 @@ class TrackerSheet:
             requests.append({"updateFilterView": {"filter": {"filterViewId": view["filterViewId"], "range": whole},
                                                   "fields": "range"}})
         self.ws.spreadsheet.batch_update({"requests": requests})
+
+
+MANUAL_TAB = "Manual"
+MANUAL_COLUMNS = [
+    "Week of", "Venue", "Website", "Why it's manual", "Title", "Screen", "Year", "Director",
+    "Start date", "End date", "Dates (as listed)", "Times", "Format", "Events", "Series", "Notes",
+    "Added to Screenings",
+]
+
+
+class ManualSheet:
+    """The Manual tab: one placeholder row per venue the job couldn't read each week.
+    Jonathan fills in titles (adding rows for more films), and sync() copies the
+    finished rows into Screenings with Status "Manual"."""
+
+    def __init__(self, tracker: TrackerSheet):
+        self.tracker = tracker
+        self.ws = tracker.ws.spreadsheet.worksheet(MANUAL_TAB)
+
+    def add_week(self, week_of: str, venues: list[tuple[str, str, str]]) -> int:
+        """venues: (name, website, reason). Skips venues already listed for that week."""
+        existing = self.ws.get_all_values()
+        header = existing[0]
+        have = {(r[header.index("Week of")], r[header.index("Venue")]) for r in existing[1:] if len(r) > 1}
+        rows = []
+        for name, url, why in venues:
+            if (week_of, name) in have:
+                continue
+            values = {"Week of": week_of, "Venue": name, "Website": url, "Why it's manual": why}
+            rows.append([_cell(c, values.get(c, "")) for c in header])
+        if rows:
+            self.ws.append_rows(rows, value_input_option="USER_ENTERED", table_range="A1")
+        return len(rows)
+
+    def _chains(self) -> dict[str, str]:
+        rows = self.ws.spreadsheet.worksheet("Venues").get_all_values()[1:]
+        return {r[0]: r[1] for r in rows if len(r) > 1}
+
+    def sync(self) -> int:
+        """Copy filled-in rows (those with a title) into Screenings, then mark them added."""
+        chains = self._chains()
+        values = self.ws.get_all_values()
+        header = values[0]
+        col = {name: i for i, name in enumerate(header)}
+        get = lambda r, name: r[col[name]].strip() if col.get(name, len(r)) < len(r) else ""
+        rows, marks = [], []
+        for n, r in enumerate(values[1:], start=2):
+            if not get(r, "Title") or get(r, "Added to Screenings"):
+                continue
+            start = get(r, "Start date") or get(r, "Week of")
+            row = {c: get(r, c) for c in header if c in COLUMNS}
+            row.update({
+                "Chain or group": chains.get(get(r, "Venue"), get(r, "Venue")),
+                "Start date": start,
+                "End date": get(r, "End date") or start,
+                "Status": "Manual",
+                "Source file": get(r, "Website"),
+            })
+            rows.append(row)
+            marks.append(n)
+        if not rows:
+            return 0
+        self.tracker.append_new(rows)
+        mark_col = gspread.utils.rowcol_to_a1(1, col["Added to Screenings"] + 1).rstrip("1")
+        self.ws.batch_update([{"range": f"{mark_col}{n}", "values": [["Yes"]]} for n in marks])
+        return len(rows)
