@@ -47,4 +47,23 @@ class TrackerSheet:
             new.append([_cell(col, str(row.get(col, ""))) for col in header])
         if new:
             self.ws.append_rows(new, value_input_option="USER_ENTERED", table_range="A1")
+            self._cover_all_rows()
         return len(new)
+
+    def _cover_all_rows(self):
+        # Keep the header filter and saved filter views (like "This week")
+        # stretched over every row, including the ones just appended.
+        sheet_id = self.ws.id
+        meta = self.ws.spreadsheet.fetch_sheet_metadata({"fields": "sheets(properties(sheetId,gridProperties),basicFilter,filterViews)"})
+        sheet = next(s for s in meta["sheets"] if s["properties"]["sheetId"] == sheet_id)
+        grid = sheet["properties"]["gridProperties"]
+        whole = {"sheetId": sheet_id, "startRowIndex": 0, "endRowIndex": grid["rowCount"],
+                 "startColumnIndex": 0, "endColumnIndex": grid["columnCount"]}
+        # Re-set the header filter with whatever sort or filter is already on it.
+        basic = dict(sheet.get("basicFilter", {}), range=whole)
+        basic.pop("criteria", None)
+        requests = [{"setBasicFilter": {"filter": basic}}]
+        for view in sheet.get("filterViews", []):
+            requests.append({"updateFilterView": {"filter": {"filterViewId": view["filterViewId"], "range": whole},
+                                                  "fields": "range"}})
+        self.ws.spreadsheet.batch_update({"requests": requests})
