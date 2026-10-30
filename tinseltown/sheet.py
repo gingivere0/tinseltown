@@ -13,9 +13,16 @@ def _key(venue: str, title: str, start: str, times: str) -> tuple:
     return (venue.lower().strip(), title.lower().strip(), start.strip(), times.lower().strip())
 
 
-def _safe(value: str) -> str:
-    # Keep titles like "=Equals" or "+1" from being read as formulas.
-    return "'" + value if value[:1] in ("=", "+", "-", "@") else value
+# Columns Sheets should parse (dates for the week filters, year as a number).
+PARSED = {"Start date", "End date", "Year"}
+
+
+def _cell(col: str, value: str) -> str:
+    # Everything else goes in as text, so "7:30 pm" stays a time label rather
+    # than a day fraction and titles like "=Equals" or "1917" aren't reinterpreted.
+    if col in PARSED or not value:
+        return value
+    return "'" + value
 
 
 class TrackerSheet:
@@ -37,7 +44,7 @@ class TrackerSheet:
             if k in seen:
                 continue
             seen.add(k)
-            new.append([_safe(str(row.get(col, ""))) for col in header])
+            new.append([_cell(col, str(row.get(col, ""))) for col in header])
         if new:
             self.ws.append_rows(new, value_input_option="USER_ENTERED", table_range="A1")
         return len(new)
