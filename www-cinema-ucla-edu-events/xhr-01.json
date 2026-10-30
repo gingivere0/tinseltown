@@ -1,0 +1,6 @@
+{
+ "url": "https://elastical.library.ucla.edu/apps-prod-ftva-website/_search",
+ "status": 200,
+ "type": "application/json; charset=UTF-8",
+ "body": "{\"took\":2,\"timed_out\":false,\"_shards\":{\"total\":1,\"successful\":1,\"skipped\":0,\"failed\":0},\"hits\":{\"total\":{\"value\":2282,\"relation\":\"eq\"},\"max_score\":null,\"hits\":[]},\"aggregations\":{\"Screening Format\":{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"Digital\",\"doc_count\":186},{\"key\":\"35mm\",\"doc_count\":60},{\"key\":\"16mm\",\"doc_count\":16}]},\"Event Type\":{\"doc_count_error_upper_bound\":0,\"sum_other_doc_count\":0,\"buckets\":[{\"key\":\"Guest Speaker\",\"doc_count\":638},{\"key\":\"Film\",\"doc_count\":230},{\"key\":\"Foreign-language\",\"doc_count\":74},{\"key\":\"Television\",\"doc_count\":23}]}}}"
+}

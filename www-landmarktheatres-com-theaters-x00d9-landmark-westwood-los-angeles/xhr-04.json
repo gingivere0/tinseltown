@@ -1,0 +1,6 @@
+{
+ "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/474908142.json",
+ "status": 200,
+ "type": "application/json",
+ "body": "{\"data\":{\"allMovieCategory\":{\"nodes\":[{\"__typename\":\"MovieCategory\",\"id\":\"NEW\",\"label\":null,\"type\":\"NEW\",\"icon\":{\"url\":null,\"probe\":null},\"movies\":null},{\"__typename\":\"MovieCategory\",\"id\":\"PREVIEW\",\"label\":null,\"type\":\"PREVIEW\",\"icon\":{\"url\":null,\"probe\":null},\"movies\":null}]}}}"
+}

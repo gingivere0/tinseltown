@@ -1,0 +1,229 @@
+{
+ "url": "https://www.landmarktheatres.com/theaters/x00d9-landmark-westwood-los-angeles",
+ "status": 200,
+ "final_url": "https://www.landmarktheatres.com/theaters/x00d9-landmark-westwood-los-angeles/",
+ "xhr": [
+  {
+   "i": 0,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/app-data.json",
+   "status": 200,
+   "bytes": 50
+  },
+  {
+   "i": 1,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/theaters/x00d9-landmark-westwood-los-angeles/page-data.json",
+   "status": 200,
+   "bytes": 42439
+  },
+  {
+   "i": 2,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/1176061465.json",
+   "status": 200,
+   "bytes": 4426
+  },
+  {
+   "i": 3,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/335697327.json",
+   "status": 200,
+   "bytes": 1676
+  },
+  {
+   "i": 4,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/474908142.json",
+   "status": 200,
+   "bytes": 279
+  },
+  {
+   "i": 5,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/1575531621.json",
+   "status": 200,
+   "bytes": 143679
+  },
+  {
+   "i": 6,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/2107300390.json",
+   "status": 200,
+   "bytes": 24236
+  },
+  {
+   "i": 7,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/2744905544.json",
+   "status": 200,
+   "bytes": 57
+  },
+  {
+   "i": 8,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/3168165892.json",
+   "status": 200,
+   "bytes": 9755
+  },
+  {
+   "i": 9,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/1847294491.json",
+   "status": 200,
+   "bytes": 4799
+  },
+  {
+   "i": 10,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/2506275789.json",
+   "status": 200,
+   "bytes": 53400
+  },
+  {
+   "i": 11,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/551167854.json",
+   "status": 200,
+   "bytes": 2823
+  },
+  {
+   "i": 12,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/3509975915.json",
+   "status": 200,
+   "bytes": 38
+  },
+  {
+   "i": 13,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/3433427452.json",
+   "status": 200,
+   "bytes": 22838
+  },
+  {
+   "i": 14,
+   "url": "https://maps.googleapis.com/maps/api/mapsjs/gen_204?csp_test=true",
+   "status": 200,
+   "bytes": 3
+  },
+  {
+   "i": 15,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/3362424247.json",
+   "status": 200,
+   "bytes": 31430
+  },
+  {
+   "i": 16,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/3836549025.json",
+   "status": 200,
+   "bytes": 509054
+  },
+  {
+   "i": 17,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/sq/d/906269967.json",
+   "status": 200,
+   "bytes": 34
+  },
+  {
+   "i": 18,
+   "url": "https://cms-assets.webediamovies.pro/production/2/3bd8bfa4c6ca845eeba00592f0bad152.svg",
+   "status": 200,
+   "bytes": 1460
+  },
+  {
+   "i": 19,
+   "url": "https://cms-assets.webediamovies.pro/production/2/659936cebd7ae4591d41b80b0c32803b.svg",
+   "status": 200,
+   "bytes": 1443
+  },
+  {
+   "i": 20,
+   "url": "https://cms-assets.webediamovies.pro/production/2/4a0d4c22d35dee1ae877d916e3146447.svg",
+   "status": 200,
+   "bytes": 1057
+  },
+  {
+   "i": 21,
+   "url": "https://cms-assets.webediamovies.pro/production/2/a6954bce66d6cd13629359371a530bbf.svg",
+   "status": 200,
+   "bytes": 1073
+  },
+  {
+   "i": 22,
+   "url": "https://cms-assets.webediamovies.pro/production/2/8d675d60a9e6a4a9637b75a14b1b2722.svg",
+   "status": 200,
+   "bytes": 2030
+  },
+  {
+   "i": 23,
+   "url": "https://cms-assets.webediamovies.pro/production/2/6765a8eec2a815656ee50701991b9f89.svg",
+   "status": 200,
+   "bytes": 3420
+  },
+  {
+   "i": 24,
+   "url": "https://cms-assets.webediamovies.pro/production/217/794d4eea7de49c3371c135d0d7b403d7.svg",
+   "status": 200,
+   "bytes": 4668
+  },
+  {
+   "i": 25,
+   "url": "https://cms-assets.webediamovies.pro/production/217/408be3dd30d431de9dc2b88afd4cb60f.svg",
+   "status": 200,
+   "bytes": 2722
+  },
+  {
+   "i": 26,
+   "url": "https://cms-assets.webediamovies.pro/production/217/d6fadcc34553908df7815ff4c52aaba9.svg",
+   "status": 200,
+   "bytes": 2141
+  },
+  {
+   "i": 27,
+   "url": "https://www.landmarktheatres.com/api/gatsby-source-boxofficeapi/moviesComingSoon",
+   "status": 200,
+   "bytes": 12397
+  },
+  {
+   "i": 28,
+   "url": "https://www.landmarktheatres.com/api/gatsby-source-boxofficeapi/movies?basic=false&castingLimit=3&ids=182794&ids=271543&ids=291636&ids=301039&ids=313873&ids=314280",
+   "status": 200,
+   "bytes": 22322
+  },
+  {
+   "i": 29,
+   "url": "https://www.landmarktheatres.com/api/gatsby-source-boxofficeapi/scheduledMovies?theaterId=X00D9",
+   "status": 200,
+   "bytes": 421
+  },
+  {
+   "i": 30,
+   "url": "https://maps.googleapis.com/maps/api/mapsjs/gen_204?csp_test=true",
+   "status": 200,
+   "bytes": 3
+  },
+  {
+   "i": 31,
+   "url": "https://www.google-analytics.com/j/collect?v=1&_v=j102&a=1403650822&t=pageview&_s=1&dl=https%3A%2F%2Fwww.landmarktheatres.com%2Ftheaters%2Fx00d9-landmark-westwood-los-angeles%2F&ul=en-us&dt=Landmark%20Westwood%2C%20Los%20Angeles%20%E2%80%94%20Landmark%20Theatres&sr=1280x720&vp=1280x720&_u=QCCAgAABAAAAAC~&jid=&gjid=&cid=559674698.1793390686&tid=UA-55296434-1&_gid=761322859.1793390686&_slc=1&gtm=45He6as1n81NC89LNFv76654208za200zd76654208xf1&gcd=13l3l3l3l1l1&dma=0&tcfd=10000&tag_exp=115616985~115938466~115938469~118897920~118897930~120385422~120420415~120469145~120469153~121246026~121246034~123620776~123636747~123691370&z=1260741554",
+   "status": 200,
+   "bytes": 3
+  },
+  {
+   "i": 32,
+   "url": "https://api.userway.org/api/v1/tunings/ftPcoeJ0jr",
+   "status": 200,
+   "bytes": 1998
+  },
+  {
+   "i": 33,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/index/page-data.json",
+   "status": 200,
+   "bytes": 68115
+  },
+  {
+   "i": 34,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/showtimes/page-data.json",
+   "status": 200,
+   "bytes": 44558
+  },
+  {
+   "i": 35,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/showtimes/page-data.json",
+   "status": 200,
+   "bytes": 44558
+  },
+  {
+   "i": 36,
+   "url": "https://cms-assets.webediamovies.pro/prod/landmarktheatres/2026-10-30/public/page-data/index/page-data.json",
+   "status": 200,
+   "bytes": 68115
+  }
+ ]
+}

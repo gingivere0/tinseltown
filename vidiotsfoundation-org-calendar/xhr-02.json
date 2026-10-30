@@ -1,0 +1,6 @@
+{
+ "url": "https://m.stripe.com/6",
+ "status": 200,
+ "type": "application/json;charset=utf-8",
+ "body": "{\"muid\":\"88bbd12b-eba2-4e5c-a427-0cf0a2bf447a28a0b7\",\"guid\":\"a8860a01-f6a7-44e4-8a20-59394860b7485d2ee5\",\"sid\":\"b1095736-9e25-4412-a37e-e24e756162a2cab70c\"}"
+}

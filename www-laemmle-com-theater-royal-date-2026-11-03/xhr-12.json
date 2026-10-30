@@ -1,0 +1,6 @@
+{
+ "url": "https://bam.nr-data.net/browser/blobs?browser_monitoring_key=NRJS-eed661989b962be62ca&type=BrowserSessionChunk&app_id=1482118304&protocol_version=0&timestamp=1793390720896&attributes=entityGuid%3DMzQwMzM3NXxCUk9XU0VSfEFQUExJQ0FUSU9OfDE1ODg2MzIwNDk%26harvestId%3D637b5b4808db0bf4_d97f3f6f743eb2af_2%26trace.firstTimestamp%3D1793390720896%26trace.lastTimestamp%3D1793390729026%26trace.nodes%3D180%26trace.originTimestamp%3D1793390720896%26agentVersion%3D1.324.1%26firstSessionHarvest%3Dtrue%26ptid%3Dd97f3f6f743eb2af%26session%3D637b5b4808db0bf4%26currentUrl%3Dhttps://www.laemmle.com/theater/royal",
+ "status": 200,
+ "type": "image/gif",
+ "body": "GIF89a\u0001\u0000\u0001\u0000\u0000\u0000\u0000,\u0000\u0000\u0000\u0000\u0001\u0000\u0001\u0000\u0000\u0002"
+}

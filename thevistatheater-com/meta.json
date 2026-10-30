@@ -1,0 +1,5 @@
+{
+ "url": "https://thevistatheater.com/",
+ "error": "Error: Page.goto: net::ERR_SSL_PROTOCOL_ERROR at https://thevistatheater.com/\nCall log:\n  - navigating to \"https://thevistatheater.com/\", waiting until \"domcontentloaded\"\n",
+ "xhr": []
+}

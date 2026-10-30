@@ -1,0 +1,6 @@
+{
+ "url": "https://libguides-proxy.library.ucla.edu/api/libguides/ftva/global/proxy",
+ "status": 200,
+ "type": "application/json",
+ "body": "{\"infoAlert\":{\"title\":\"\",\"text\":\"\"},\"bannerAlert\":{\"text\":\"\\n    \\n\\n    \"}}"
+}

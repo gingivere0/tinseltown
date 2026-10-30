@@ -1,0 +1,109 @@
+{
+ "url": "https://www.laemmle.com/theater/royal?date=2026-11-03",
+ "status": 200,
+ "final_url": "https://www.laemmle.com/theater/royal?date=2026-11-03",
+ "xhr": [
+  {
+   "i": 0,
+   "url": "https://syndication.twitter.com/settings?session_id=f99102d45cb9cb03ac241630d3bed99f56000996",
+   "status": 200,
+   "bytes": 869
+  },
+  {
+   "i": 1,
+   "url": "https://widget.freshworks.com/widgets/60000003210.json?randomId=0.5693862986232505",
+   "status": 200,
+   "bytes": 1313
+  },
+  {
+   "i": 2,
+   "url": "https://securepubads.g.doubleclick.net/gampad/ads?pvsid=5843970095368417&correlator=3758435906085755&eid=95408119%2C122881901&output=ldjh&gdfp_req=1&vrg=202610270101&ptt=17&impl=fif&iu_parts=6134471%2CT_royal_LB&enc_prev_ius=%2F0%2F1&prev_iu_szs=728x90&ifi=4&dids=div-gpt-ad-1381940341940-0&adfs=3759544877&sfv=1-0-45&sc=1&cookie_enabled=1&abxe=1&dt=1793390721495&lmt=1793415764&adxs=173&adys=1842&biw=1280&bih=720&scr_x=0&scr_y=0&btvi=3&ucis=4&oid=2&u_his=2&u_h=720&u_w=1280&u_ah=720&u_aw=1280&u_cd=24&u_sd=1&u_tz=-420&dmc=16&bc=31&nvt=1&uach=WyJtYWNPUyIsIjEwXzE1XzciLCJ4ODYiLCIiLCIxNTYuMC44MDc4LjQiLG51bGwsMCxudWxsLCI2NCIsW1siTm90OkEtQnJhbmQiLCI4LjAuMC4wIl0sWyJDaHJvbWl1bSIsIjE1Ni4wLjgwNzguNCJdLFsiSGVhZGxlc3NDaHJvbWUiLCIxNTYuMC44MDc4LjQiXV0sMF0.&url=https%3A%2F%2Fwww.laemmle.com%2Ftheater%2Froyal%3Fdate%3D2026-11-03&vis=1&psz=954x90&msz=728x-1&fws=0&ohw=0&dlt=1793390720979&idt=424&adks=482584632&frm=20&cpu=2&eoidce=1",
+   "status": 200,
+   "bytes": 46797
+  },
+  {
+   "i": 3,
+   "url": "https://securepubads.g.doubleclick.net/gampad/ads?pvsid=5843970095368417&correlator=3758435906085755&eid=95408119%2C122881901&output=ldjh&gdfp_req=1&vrg=202610270101&ptt=17&impl=fif&iu_parts=6134471%2CT_royal_300x100&enc_prev_ius=%2F0%2F1&prev_iu_szs=300x100&ifi=2&dids=div-gpt-ad-1389583072878-0&adfs=1734907957&sfv=1-0-45&sc=1&cookie_enabled=1&abxe=1&dt=1793390721483&lmt=1793415764&adxs=173&adys=1041&biw=1280&bih=720&scr_x=0&scr_y=0&btvi=2&ucis=2&oid=2&u_his=2&u_h=720&u_w=1280&u_ah=720&u_aw=1280&u_cd=24&u_sd=1&u_tz=-420&dmc=16&bc=31&nvt=1&uach=WyJtYWNPUyIsIjEwXzE1XzciLCJ4ODYiLCIiLCIxNTYuMC44MDc4LjQiLG51bGwsMCxudWxsLCI2NCIsW1siTm90OkEtQnJhbmQiLCI4LjAuMC4wIl0sWyJDaHJvbWl1bSIsIjE1Ni4wLjgwNzguNCJdLFsiSGVhZGxlc3NDaHJvbWUiLCIxNTYuMC44MDc4LjQiXV0sMF0.&url=https%3A%2F%2Fwww.laemmle.com%2Ftheater%2Froyal%3Fdate%3D2026-11-03&vis=1&psz=306x100&msz=300x-1&fws=0&ohw=0&dlt=1793390720979&idt=424&adks=347850349&frm=20&cpu=2&eoidce=1",
+   "status": 200,
+   "bytes": 839
+  },
+  {
+   "i": 4,
+   "url": "https://securepubads.g.doubleclick.net/gampad/ads?pvsid=5843970095368417&correlator=3758435906085755&eid=95408119%2C122881901&output=ldjh&gdfp_req=1&vrg=202610270101&ptt=17&impl=fif&iu_parts=6134471%2CT_royal_MR&enc_prev_ius=%2F0%2F1&prev_iu_szs=300x250&ifi=1&dids=div-gpt-ad-1381940364822-0&adfs=2881321379&sfv=1-0-45&sc=1&cookie_enabled=1&abxe=1&dt=1793390721477&lmt=1793415764&adxs=173&adys=776&biw=1280&bih=720&scr_x=0&scr_y=0&btvi=1&ucis=1&oid=2&u_his=2&u_h=720&u_w=1280&u_ah=720&u_aw=1280&u_cd=24&u_sd=1&u_tz=-420&dmc=16&bc=31&nvt=1&uach=WyJtYWNPUyIsIjEwXzE1XzciLCJ4ODYiLCIiLCIxNTYuMC44MDc4LjQiLG51bGwsMCxudWxsLCI2NCIsW1siTm90OkEtQnJhbmQiLCI4LjAuMC4wIl0sWyJDaHJvbWl1bSIsIjE1Ni4wLjgwNzguNCJdLFsiSGVhZGxlc3NDaHJvbWUiLCIxNTYuMC44MDc4LjQiXV0sMF0.&url=https%3A%2F%2Fwww.laemmle.com%2Ftheater%2Froyal%3Fdate%3D2026-11-03&vis=1&psz=306x250&msz=300x-1&fws=0&ohw=0&dlt=1793390720979&idt=424&adks=1736733227&frm=20&cpu=2&eoidce=1",
+   "status": 200,
+   "bytes": 46926
+  },
+  {
+   "i": 5,
+   "url": "https://securepubads.g.doubleclick.net/gampad/ads?pvsid=5843970095368417&correlator=3758435906085755&eid=95408119%2C122881901&output=ldjh&gdfp_req=1&vrg=202610270101&ptt=17&impl=fif&iu_parts=6134471%2CT_royal_Sky&enc_prev_ius=%2F0%2F1&prev_iu_szs=160x600&ifi=3&dids=div-gpt-ad-1389583060696-0&adfs=2412993247&sfv=1-0-45&sc=1&cookie_enabled=1&abxe=1&dt=1793390721485&lmt=1793415764&adxs=955&adys=467&biw=1280&bih=720&scr_x=0&scr_y=0&btvi=0&ucis=3&oid=2&u_his=2&u_h=720&u_w=1280&u_ah=720&u_aw=1280&u_cd=24&u_sd=1&u_tz=-420&dmc=16&bc=31&nvt=1&uach=WyJtYWNPUyIsIjEwXzE1XzciLCJ4ODYiLCIiLCIxNTYuMC44MDc4LjQiLG51bGwsMCxudWxsLCI2NCIsW1siTm90OkEtQnJhbmQiLCI4LjAuMC4wIl0sWyJDaHJvbWl1bSIsIjE1Ni4wLjgwNzguNCJdLFsiSGVhZGxlc3NDaHJvbWUiLCIxNTYuMC44MDc4LjQiXV0sMF0.&url=https%3A%2F%2Fwww.laemmle.com%2Ftheater%2Froyal%3Fdate%3D2026-11-03&vis=1&psz=152x600&msz=160x-1&fws=0&ohw=0&dlt=1793390720979&idt=424&adks=2788744546&frm=20&cpu=2&eoidce=1",
+   "status": 200,
+   "bytes": 46811
+  },
+  {
+   "i": 6,
+   "url": "https://widget.freshworks.com/widgetBase/locales/en.json",
+   "status": 200,
+   "bytes": 4782
+  },
+  {
+   "i": 7,
+   "url": "https://api.userway.org/api/v1/tunings/2U9fHhLskc",
+   "status": 200,
+   "bytes": 879
+  },
+  {
+   "i": 8,
+   "url": "https://cdn.userway.org/widgetapp/2026-10-29-06-53-08/locales/en-US.json",
+   "status": 200,
+   "bytes": 674
+  },
+  {
+   "i": 9,
+   "url": "https://connect.facebook.net/app_config/json/196461560528595/",
+   "status": 200,
+   "bytes": 27
+  },
+  {
+   "i": 10,
+   "url": "https://ep1.adtrafficquality.google/getconfig/sodar?sv=200&tid=gpt&tv=m202610270101&st=env&sjk=5843970095368417",
+   "status": 200,
+   "bytes": 18330
+  },
+  {
+   "i": 11,
+   "url": "https://bam.nr-data.net/1/NRJS-eed661989b962be62ca?a=1482118304&v=1.324.1&to=Nl1aNksEXEAAWhZYWA8XeQFNDF1dTn0QREcAVGQMVgFXbyJWDEVFDlRUB0s5fFwFXDRYUhZ7VwxNF11fDVwQHAkXUV0V&rst=1707&s=637b5b4808db0bf4&ref=https://www.laemmle.com/theater/royal&ptid=d97f3f6f743eb2af&af=err,spa,xhr,stn,ins&ap=1211&be=92&fe=1419&dc=268&at=GhpZQAMeT04%3D&fsh=1&perf=%7B%22timing%22:%7B%22of%22:1793390720882,%22n%22:0,%22f%22:0,%22dn%22:1,%22dne%22:31,%22c%22:31,%22s%22:32,%22ce%22:38,%22rq%22:38,%22rp%22:92,%22rpe%22:95,%22di%22:343,%22ds%22:345,%22de%22:360,%22dc%22:1503,%22l%22:1503,%22le%22:1511%7D,%22navigation%22:%7B%7D%7D&fp=264&fcp=264",
+   "status": 200,
+   "bytes": 199
+  },
+  {
+   "i": 12,
+   "url": "https://bam.nr-data.net/browser/blobs?browser_monitoring_key=NRJS-eed661989b962be62ca&type=BrowserSessionChunk&app_id=1482118304&protocol_version=0&timestamp=1793390720896&attributes=entityGuid%3DMzQwMzM3NXxCUk9XU0VSfEFQUExJQ0FUSU9OfDE1ODg2MzIwNDk%26harvestId%3D637b5b4808db0bf4_d97f3f6f743eb2af_2%26trace.firstTimestamp%3D1793390720896%26trace.lastTimestamp%3D1793390729026%26trace.nodes%3D180%26trace.originTimestamp%3D1793390720896%26agentVersion%3D1.324.1%26firstSessionHarvest%3Dtrue%26ptid%3Dd97f3f6f743eb2af%26session%3D637b5b4808db0bf4%26currentUrl%3Dhttps://www.laemmle.com/theater/royal",
+   "status": 200,
+   "bytes": 24
+  },
+  {
+   "i": 13,
+   "url": "https://bam.nr-data.net/jserrors/1/NRJS-eed661989b962be62ca?a=1482118304&v=1.324.1&to=Nl1aNksEXEAAWhZYWA8XeQFNDF1dTn0QREcAVGQMVgFXbyJWDEVFDlRUB0s5fFwFXDRYUhZ7VwxNF11fDVwQHAkXUV0V&rst=1825&s=637b5b4808db0bf4&ref=https://www.laemmle.com/theater/royal&ptid=d97f3f6f743eb2af&ht=1",
+   "status": 200,
+   "bytes": 24
+  },
+  {
+   "i": 14,
+   "url": "https://bam.nr-data.net/browser/blobs?browser_monitoring_key=NRJS-eed661989b962be62ca&type=BrowserSessionChunk&app_id=1482118304&protocol_version=0&timestamp=1793390721160&attributes=entityGuid%3DMzQwMzM3NXxCUk9XU0VSfEFQUExJQ0FUSU9OfDE1ODg2MzIwNDk%26harvestId%3D637b5b4808db0bf4_d97f3f6f743eb2af_3%26trace.firstTimestamp%3D1793390721160%26trace.lastTimestamp%3D1793390722707%26trace.nodes%3D66%26trace.originTimestamp%3D1793390720896%26agentVersion%3D1.324.1%26ptid%3Dd97f3f6f743eb2af%26session%3D637b5b4808db0bf4%26currentUrl%3Dhttps://www.laemmle.com/theater/royal",
+   "status": 200,
+   "bytes": 24
+  },
+  {
+   "i": 15,
+   "url": "https://bam.nr-data.net/events/1/NRJS-eed661989b962be62ca?a=1482118304&v=1.324.1&to=Nl1aNksEXEAAWhZYWA8XeQFNDF1dTn0QREcAVGQMVgFXbyJWDEVFDlRUB0s5fFwFXDRYUhZ7VwxNF11fDVwQHAkXUV0V&rst=1824&s=637b5b4808db0bf4&ref=https://www.laemmle.com/theater/royal&ptid=d97f3f6f743eb2af&ht=1",
+   "status": 200,
+   "bytes": 24
+  },
+  {
+   "i": 16,
+   "url": "https://bam.nr-data.net/events/1/NRJS-eed661989b962be62ca?a=1482118304&v=1.324.1&to=Nl1aNksEXEAAWhZYWA8XeQFNDF1dTn0QREcAVGQMVgFXbyJWDEVFDlRUB0s5fFwFXDRYUhZ7VwxNF11fDVwQHAkXUV0V&rst=1826&s=637b5b4808db0bf4&ref=https://www.laemmle.com/theater/royal&ptid=d97f3f6f743eb2af&ht=1",
+   "status": 200,
+   "bytes": 24
+  }
+ ]
+}

@@ -1,0 +1,6 @@
+{
+ "url": "https://connect.facebook.net/app_config/json/196461560528595/",
+ "status": 200,
+ "type": "application/json; charset=utf-8",
+ "body": "{\"fedcm\":{\"default\":false}}"
+}

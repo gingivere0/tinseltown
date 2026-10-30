@@ -1,0 +1,43 @@
+{
+ "url": "https://www.cinema.ucla.edu/events",
+ "status": 200,
+ "final_url": "https://www.cinema.ucla.edu/events/",
+ "xhr": [
+  {
+   "i": 0,
+   "url": "https://www.cinema.ucla.edu/events/_payload.json?548d3fbb-4a80-4bf4-ab57-07b5c0563727",
+   "status": 200,
+   "bytes": 6513
+  },
+  {
+   "i": 1,
+   "url": "https://elastical.library.ucla.edu/apps-prod-ftva-website/_search",
+   "status": 200,
+   "bytes": 595
+  },
+  {
+   "i": 2,
+   "url": "https://elastical.library.ucla.edu/apps-prod-ftva-website/_search",
+   "status": 200,
+   "bytes": 91833
+  },
+  {
+   "i": 3,
+   "url": "https://libguides-proxy.library.ucla.edu/api/libguides/ftva/global/proxy",
+   "status": 200,
+   "bytes": 76
+  },
+  {
+   "i": 4,
+   "url": "https://elastical.library.ucla.edu/apps-prod-ftva-website/_search",
+   "status": 200,
+   "bytes": 839193
+  },
+  {
+   "i": 5,
+   "url": "https://www.cinema.ucla.edu/_nuxt/builds/meta/548d3fbb-4a80-4bf4-ab57-07b5c0563727.json",
+   "status": 200,
+   "bytes": 233453
+  }
+ ]
+}

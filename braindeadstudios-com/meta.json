@@ -1,0 +1,5 @@
+{
+ "url": "https://braindeadstudios.com/",
+ "error": "Error: Page.goto: net::ERR_NAME_NOT_RESOLVED at https://braindeadstudios.com/\nCall log:\n  - navigating to \"https://braindeadstudios.com/\", waiting until \"domcontentloaded\"\n",
+ "xhr": []
+}
