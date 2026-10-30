@@ -7,8 +7,9 @@ Google Sheet for review.
 ## How it works
 
 1. `.github/workflows/weekly.yml` runs every Friday at 15:00 UTC, and on demand from the Actions tab.
-2. Each venue in `venues.yaml` is opened in a headless browser, and Claude pulls that week's screenings
-   (title, dates, times, format, Q&As and other event notes) out of the page text.
+2. Each venue in `venues.yaml` is opened in a headless browser, and its parser in `tinseltown/parsers`
+   reads that week's screenings (title, dates, times, format, Q&As and other event notes), usually from
+   the same data feed the site's own page uses. Everything runs on GitHub's free tier.
 3. New screenings are appended to the sheet's Screenings tab with Status "Auto". Rows already in the
    sheet are left alone, so edits are never overwritten.
 4. The week's results are also saved to `data/listings-<date>.csv`, and the run's summary page lists
@@ -18,7 +19,6 @@ Google Sheet for review.
 
 | Name | Kind | What it is |
 | --- | --- | --- |
-| `ANTHROPIC_API_KEY` | Actions secret | Claude API key used for extraction |
 | `GOOGLE_SERVICE_ACCOUNT_JSON` | Actions secret | Key file of a Google Cloud service account; share the sheet with its email as an Editor |
 | `SHEET_ID` | Actions variable | The ID from the sheet's URL |
 
@@ -32,4 +32,9 @@ pip install -r requirements.txt && python -m playwright install chromium
 python -m tinseltown run --dry-run --only "The New Beverly"
 ```
 
-To add a theater, add an entry to `venues.yaml`.
+To add a theater, add an entry to `venues.yaml` and, if no existing parser fits, a parser module.
+The **Snapshot venue pages** workflow saves what a site serves (HTML, text, and JSON requests) to the
+`snapshots` branch, which is the easiest way to write or fix a parser.
+
+Venues marked `manual` either turn away automated visitors (AMC, Lumiere, Brain Dead) or post
+irregularly; the run summary links them for a quick check by hand.

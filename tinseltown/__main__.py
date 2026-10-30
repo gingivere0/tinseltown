@@ -27,8 +27,9 @@ def main(argv=None) -> int:
     run.add_argument("--dry-run", action="store_true", help="write the CSV but not the sheet")
     args = parser.parse_args(argv)
 
-    from .extract import Extractor
     from .fetch import PageFetcher
+    from .model import merge
+    from .parsers import PARSERS
 
     start = args.start or next_friday(dt.date.today())
     venues = yaml.safe_load((ROOT / "venues.yaml").read_text())
@@ -36,18 +37,15 @@ def main(argv=None) -> int:
         wanted = {v.lower() for v in args.only}
         venues = [v for v in venues if v["venue"].lower() in wanted]
 
-    extractor = Extractor()
+    end = start + dt.timedelta(days=6)
     rows, report, manual = [], [], []
-    page_cache: dict[str, str] = {}
     with PageFetcher() as fetcher:
         for venue in venues:
             if venue.get("manual"):
                 manual.append(venue)
                 continue
             try:
-                text = "\n\n".join(
-                    page_cache.setdefault(url, fetcher.text(url)) for url in venue["urls"])
-                found = extractor.screenings(venue, text, start)
+                found = merge(PARSERS[venue["parser"]](fetcher, venue, start, end))
                 rows += [s.row(weekly=venue.get("style") == "weekly") for s in found]
                 report.append((venue["venue"], len(found), ""))
             except Exception as exc:  # one broken site should not stop the rest

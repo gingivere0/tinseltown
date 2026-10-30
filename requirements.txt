@@ -1,4 +1,4 @@
-anthropic>=0.75
+beautifulsoup4>=4.12
 playwright>=1.48
 gspread>=6.1
 google-auth>=2.35

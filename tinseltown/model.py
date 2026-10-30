@@ -74,3 +74,18 @@ def format_dates(dates: list[dt.date], weekly: bool = False) -> str:
     if consecutive:
         return f"{label(ds[0])} - {label(ds[-1])}"
     return ", ".join(label(d) for d in ds)
+
+
+def merge(screenings: list[Screening]) -> list[Screening]:
+    """Combine single-day entries for the same film, showtime, and notes into one run."""
+    groups: dict[tuple, Screening] = {}
+    for s in screenings:
+        k = (s.venue, s.screen, s.title.lower(), s.times.lower(), s.notes)
+        if k in groups:
+            groups[k].dates = sorted(set(groups[k].dates + s.dates))
+            for f in s.formats:
+                if f not in groups[k].formats:
+                    groups[k].formats.append(f)
+        else:
+            groups[k] = s
+    return sorted(groups.values(), key=lambda s: (min(s.dates), s.title))

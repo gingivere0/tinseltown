@@ -37,6 +37,17 @@ def formats(raw: str) -> list[str]:
     return out
 
 
+def formats_in_text(text: str) -> list[str]:
+    """Formats mentioned anywhere in free text, such as an event description."""
+    out = []
+    for rx, name in FORMATS:
+        if name in ("PRIME", "XL"):  # too ambiguous outside a format field
+            continue
+        if re.search(rx, text or "", re.I) and name not in out:
+            out.append(name)
+    return out
+
+
 def events(*texts: str) -> list[str]:
     text = " ".join(t for t in texts if t)
     return [name for rx, name in EVENTS if re.search(rx, text, re.I)]

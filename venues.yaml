@@ -1,181 +1,157 @@
-# Venues the weekly job collects. Each entry is rendered in a headless browser,
-# and Claude pulls the screenings for the coming week out of the page text.
+# Venues the weekly job collects.
 #
-# style:
-#   repertory  one row per film per run of dates, with showtimes (New Beverly, Cinematheque)
-#   weekly     one row per film for the week, no showtimes (AMC, Laemmle, Landmark)
-# urls: one or more pages to read; pages are concatenated before extraction.
-# manual: true   skipped by the job and listed in the weekly summary instead.
+# parser:  which module in tinseltown/parsers reads the site
+# style:   repertory  one row per film per run of dates, with showtimes
+#          weekly     one row per film for the week, no showtimes (first-run chains)
+# manual:  the site can't be read automatically (it blocks automated visitors, or
+#          posts its calendar only on social media); listed in the weekly summary instead.
 
 - venue: The New Beverly
-  chain: The New Beverly
+  parser: newbev
   style: repertory
   urls: ["https://thenewbev.com/schedule/"]
 
-- venue: Lumiere
-  chain: Lumiere
-  style: repertory
-  urls: ["https://www.lumierecinemala.com/"]
-
-- venue: Acropolis
-  chain: Acropolis
-  style: repertory
-  urls: ["https://www.acropoliscinema.com/"]
-
-- venue: LA Film Forum
-  chain: LA Film Forum
-  style: repertory
-  urls: ["https://lafilmforum.org/schedule/"]
-
 - venue: The Aero
   chain: American Cinematheque
+  parser: cinematheque
+  location: Aero Theatre
   style: repertory
-  urls: ["https://www.americancinematheque.com/now-showing/?view_type=list"]
-  filter: Only screenings at the Aero Theatre.
+  urls: ["https://www.americancinematheque.com/now-showing/"]
+
+- venue: The Egyptian
+  chain: American Cinematheque
+  parser: cinematheque
+  location: Egyptian Theatre
+  style: repertory
+  urls: ["https://www.americancinematheque.com/now-showing/"]
 
 - venue: The Los Feliz 3
   chain: American Cinematheque
+  parser: cinematheque
+  location: Los Feliz Theatre
   style: repertory
-  urls: ["https://www.americancinematheque.com/now-showing/?view_type=list"]
-  filter: Only screenings at the Los Feliz 3.
+  urls: ["https://www.americancinematheque.com/now-showing/"]
 
 - venue: Directors Village
   chain: American Cinematheque
+  parser: cinematheque
+  location: Directors Village
   style: repertory
-  urls: ["https://www.americancinematheque.com/now-showing/?view_type=list"]
-  filter: Only screenings at Directors Village.
+  urls: ["https://www.americancinematheque.com/now-showing/"]
+
+- venue: The Culver Theater
+  chain: American Cinematheque
+  parser: cinematheque
+  location: The Culver Theater
+  style: repertory
+  urls: ["https://www.americancinematheque.com/now-showing/"]
 
 - venue: The Academy Museum
-  chain: The Academy Museum
+  parser: academy
   style: repertory
   urls: ["https://www.academymuseum.org/en/calendar"]
 
 - venue: Vidiots
-  chain: Vidiots
+  parser: vidiots
   style: repertory
-  urls: ["https://vidiotsfoundation.org/now-playing/"]
+  urls: ["https://vidiotsfoundation.org/"]
 
 - venue: The Vista
-  chain: The Vista
+  parser: vista
   style: repertory
-  urls: ["https://www.vintagecinemas.com/vista/"]
-
-- venue: Braindead
-  chain: Braindead
-  style: repertory
-  urls: ["https://www.braindeadstudios.com/"]
+  urls: ["https://www.vistatheaterhollywood.com/"]
 
 - venue: UCLA Film & TV Library
-  chain: UCLA Film & TV Library
+  parser: ucla
   style: repertory
-  urls: ["https://www.cinema.ucla.edu/calendar"]
+  urls: ["https://www.cinema.ucla.edu/events"]
+
+- venue: Acropolis
+  parser: acropolis
+  style: repertory
+  urls: ["https://www.acropoliscinema.com/"]
+
+- venue: LA Film Forum
+  parser: filmforum
+  style: repertory
+  urls: ["https://lafilmforum.org/schedule/"]
 
 - venue: Alamo
-  chain: Alamo
+  parser: alamo
   style: repertory
   urls: ["https://drafthouse.com/los-angeles"]
 
 - venue: El Capitan
-  chain: El Capitan
+  parser: elcapitan
   style: weekly
   urls: ["https://elcapitantheatre.com/"]
 
 - venue: TCL Chinese Theatre
-  chain: TCL Chinese Theatre
+  parser: chinese
   style: weekly
   urls: ["https://www.tclchinesetheatres.com/"]
 
-- venue: AMC Burbank 16
-  chain: AMC Theatres
-  style: weekly
-  urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-burbank-16/showtimes"]
-
-- venue: AMC Burbank Town Center 8
-  chain: AMC Theatres
-  style: weekly
-  urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-burbank-town-center-8/showtimes"]
-
-- venue: AMC Burbank Town Center 6
-  chain: AMC Theatres
-  style: weekly
-  urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-burbank-town-center-6/showtimes"]
-
-- venue: AMC The Americana at Brand 18
-  chain: AMC Theatres
-  style: weekly
-  urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-the-americana-at-brand-18/showtimes"]
-
-- venue: AMC The Grove 14
-  chain: AMC Theatres
-  style: weekly
-  urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-the-grove-14/showtimes"]
-
-- venue: AMC Universal Citywalk
-  chain: AMC Theatres
-  style: weekly
-  urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-universal-citywalk-hollywood-19-imax/showtimes"]
-
 - venue: Laemmle Glendale
   chain: Laemmle Theatres
+  parser: laemmle
   style: weekly
   urls: ["https://www.laemmle.com/theater/glendale"]
 
 - venue: Laemmle Monica Film Center
   chain: Laemmle Theatres
+  parser: laemmle
   style: weekly
   urls: ["https://www.laemmle.com/theater/monica-film-center"]
 
 - venue: Laemmle Noho 7
   chain: Laemmle Theatres
+  parser: laemmle
   style: weekly
   urls: ["https://www.laemmle.com/theater/noho-7"]
 
 - venue: Laemmle Royal
   chain: Laemmle Theatres
+  parser: laemmle
   style: weekly
   urls: ["https://www.laemmle.com/theater/royal"]
 
 - venue: Landmark Nuart
   chain: Landmark Theatres
+  parser: landmark
+  theater_id: X00CW
   style: weekly
-  urls: ["https://www.landmarktheatres.com/our-locations/x00qm-landmark-nuart-theatre-los-angeles/"]
+  urls: ["https://www.landmarktheatres.com/theaters/x00cw-landmark-nuart-theatre-west-los-angeles"]
 
 - venue: Landmark Westwood
   chain: Landmark Theatres
+  parser: landmark
+  theater_id: X00D9
   style: weekly
-  urls: ["https://www.landmarktheatres.com/our-locations/x0ck0-landmark-westwood-los-angeles/"]
+  urls: ["https://www.landmarktheatres.com/theaters/x00d9-landmark-westwood-los-angeles"]
 
+# Not listed on landmarktheatres.com as of October 2026.
 - venue: Landmark Pasadena
-  chain: Landmark Theatres
-  style: weekly
-  urls: ["https://www.landmarktheatres.com/our-locations/x00r8-landmark-pasadena/"]
+  manual: true
+  urls: ["https://www.landmarktheatres.com/"]
 
 - venue: Landmark Sunset
-  chain: Landmark Theatres
-  style: weekly
-  urls: ["https://www.landmarktheatres.com/our-locations/x00r5-landmark-sunset-los-angeles/"]
-
-- venue: Whammy
-  chain: Whammy
-  style: repertory
-  urls: ["https://whammyanalog.com/whammy-events"]
-
-- venue: Mezzanine
   manual: true
-  urls: ["https://mezzanine.la/"]
+  urls: ["https://www.landmarktheatres.com/"]
 
-- venue: Lightstruck
-  manual: true
-  urls: ["https://www.lightstruck.org/"]
+# These sites turn away automated visitors, so they stay on the by-hand list.
+- {venue: AMC Burbank 16, manual: true, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-burbank-16"]}
+- {venue: AMC Burbank Town Center 8, manual: true, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-burbank-town-center-8"]}
+- {venue: AMC Burbank Town Center 6, manual: true, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-burbank-town-center-6"]}
+- {venue: AMC The Americana at Brand 18, manual: true, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-the-americana-at-brand-18"]}
+- {venue: AMC The Grove 14, manual: true, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-the-grove-14"]}
+- {venue: AMC Universal Citywalk, manual: true, urls: ["https://www.amctheatres.com/movie-theatres/los-angeles/amc-universal-citywalk-hollywood-19-imax"]}
+- {venue: Lumiere, manual: true, urls: ["https://www.lumierecinemala.com/"]}
+- {venue: Braindead, manual: true, urls: ["https://www.instagram.com/braindeadstudios/"]}
 
-- venue: Now Instant Image Hall
-  manual: true
-  urls: ["https://nowinstant.com/"]
-
-- venue: The Philosophical Research Society
-  manual: true
-  urls: ["https://www.prs.org/events"]
-
-- venue: The Hollywood Roosevelt Hotel
-  manual: true
-  urls: ["https://www.thehollywoodroosevelt.com/"]
+# Small venues that post irregularly.
+- {venue: Whammy, manual: true, urls: ["https://www.whammyanalog.com/whammy-events"]}
+- {venue: Mezzanine, manual: true, urls: ["https://www.instagram.com/mezzanine.la/"]}
+- {venue: Lightstruck, manual: true, urls: ["https://www.lightstruck.org/"]}
+- {venue: Now Instant Image Hall, manual: true, urls: ["https://www.nowinstant.com/"]}
+- {venue: The Philosophical Research Society, manual: true, urls: ["https://www.prs.org/events"]}
+- {venue: The Hollywood Roosevelt Hotel, manual: true, urls: ["https://www.thehollywoodroosevelt.com/"]}
