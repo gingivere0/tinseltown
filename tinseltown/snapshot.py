@@ -1,6 +1,8 @@
 """Save each venue page's HTML, text, and JSON responses, for writing and debugging parsers.
 
-python -m tinseltown.snapshot OUT_DIR
+python -m tinseltown.snapshot OUT_DIR [URL ...]
+
+With no URLs, every page in venues.yaml is saved.
 """
 import json
 import pathlib
@@ -20,10 +22,11 @@ def slug(url: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", url.lower().split("//", 1)[-1]).strip("-")[:80]
 
 
-def main(out_dir: str) -> None:
+def main(out_dir: str, urls: list[str]) -> None:
     out = pathlib.Path(out_dir)
-    venues = yaml.safe_load((ROOT / "venues.yaml").read_text())
-    urls = list(dict.fromkeys(u for v in venues for u in v["urls"]))
+    if not urls:
+        venues = yaml.safe_load((ROOT / "venues.yaml").read_text())
+        urls = list(dict.fromkeys(u for v in venues for u in v["urls"]))
     with sync_playwright() as pw:
         browser = pw.chromium.launch()
         context = browser.new_context(user_agent=UA, locale="en-US", timezone_id="America/Los_Angeles")
@@ -72,4 +75,4 @@ def main(out_dir: str) -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], sys.argv[2:])

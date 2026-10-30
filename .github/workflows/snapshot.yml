@@ -4,6 +4,10 @@ name: Snapshot venue pages
 # so parsers can be written and debugged against what the sites actually serve.
 on:
   workflow_dispatch:
+    inputs:
+      urls:
+        description: Space-separated URLs to save instead of every venue page
+        required: false
 
 permissions:
   contents: write
@@ -19,7 +23,9 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt && python -m playwright install --with-deps chromium
-      - run: python -m tinseltown.snapshot /tmp/snapshots
+      - run: python -m tinseltown.snapshot /tmp/snapshots $URLS
+        env:
+          URLS: ${{ inputs.urls }}
       - name: Publish to the snapshots branch
         run: |
           cd /tmp/snapshots
