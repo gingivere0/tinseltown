@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TinselTown Stats</title>
+  <meta name="description" content="Charts and fun facts about what's playing on Los Angeles movie screens, from the TinselTown tracker.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Limelight&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%9E%EF%B8%8F%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="marquee">
+    <div class="wrap">
+      <h1>TinselTown</h1>
+      <p class="tagline">What's playing on Los Angeles movie screens, in charts and trivia.</p>
+      <p class="updated" id="updated">Loading the tracker&hellip;</p>
+    </div>
+  </header>
+
+  <nav class="filters" aria-label="Filters">
+    <div class="wrap filter-row">
+      <label>Theater
+        <select id="f-venue"><option value="">All theaters</option></select>
+      </label>
+      <label>When
+        <select id="f-when"><option value="all">All year</option></select>
+      </label>
+      <label class="check"><input type="checkbox" id="f-repertory"> Skip the multiplexes (AMC)</label>
+    </div>
+  </nav>
+
+  <main class="wrap" id="main">
+    <section class="tiles" id="tiles" aria-label="Headline numbers"></section>
+
+    <section class="card wide" id="specials-card">
+      <h2>Coming up: the good stuff</h2>
+      <p class="sub">Celluloid, Q&amp;As, guests, premieres, and double bills in the next seven days.</p>
+      <ul class="specials" id="specials"></ul>
+      <button type="button" class="more-btn" id="specials-more" hidden>Show all</button>
+    </section>
+
+    <div class="grid">
+      <section class="card wide">
+        <div class="card-head">
+          <div>
+            <h2>Week by week</h2>
+            <p class="sub" id="weeks-sub">Weeks run Friday to Thursday, like the tracker.</p>
+          </div>
+          <div class="seg" role="group" aria-label="Weekly measure">
+            <button type="button" data-weeks="films" aria-pressed="true">Films playing</button>
+            <button type="button" data-weeks="listings" aria-pressed="false">New listings</button>
+          </div>
+        </div>
+        <div class="chart" style="height:280px" id="weeks-box"><canvas id="c-weeks"></canvas></div>
+      </section>
+
+      <section class="card">
+        <h2>Where it's playing</h2>
+        <p class="sub">Listings per theater.</p>
+        <div class="chart" id="venues-box"><canvas id="c-venues"></canvas></div>
+      </section>
+
+      <section class="card">
+        <h2>The repeat offenders</h2>
+        <p class="sub">Films with the most listings. Click one to look it up.</p>
+        <div class="chart" id="films-box"><canvas id="c-films"></canvas></div>
+      </section>
+
+      <section class="card">
+        <h2>Wide releases</h2>
+        <p class="sub">Films that played the most different theaters.</p>
+        <div class="chart" id="spread-box"><canvas id="c-spread"></canvas></div>
+      </section>
+
+      <section class="card">
+        <h2>Showtimes</h2>
+        <p class="sub" id="hours-sub">Every listed showtime, by the hour it starts.</p>
+        <div class="chart" style="height:300px" id="hours-box"><canvas id="c-hours"></canvas></div>
+      </section>
+
+      <section class="card wide">
+        <h2>When LA goes to the movies</h2>
+        <p class="sub">Showtimes by day of week and hour, for listings on a single date. Darker means busier.</p>
+        <div class="heat" id="heat"></div>
+      </section>
+
+      <section class="card">
+        <h2>Formats</h2>
+        <p class="sub">From 35mm prints to IMAX, in listings that name a format.</p>
+        <div class="chart" id="formats-box"><canvas id="c-formats"></canvas></div>
+      </section>
+
+      <section class="card">
+        <h2>Special events</h2>
+        <p class="sub">Listings with something extra going on.</p>
+        <div class="chart" id="events-box"><canvas id="c-events"></canvas></div>
+      </section>
+
+      <section class="card">
+        <h2>Decades on screen</h2>
+        <p class="sub" id="decades-sub">Films by release decade.</p>
+        <div class="chart" style="height:280px" id="decades-box"><canvas id="c-decades"></canvas></div>
+      </section>
+
+      <section class="card">
+        <h2>Directors</h2>
+        <p class="sub" id="directors-sub">Directors with the most listings.</p>
+        <div class="chart" id="directors-box"><canvas id="c-directors"></canvas></div>
+      </section>
+
+      <section class="card wide">
+        <h2>Series and festivals</h2>
+        <p class="sub">The programs behind the listings.</p>
+        <div class="chart" id="series-box"><canvas id="c-series"></canvas></div>
+      </section>
+    </div>
+
+    <section class="facts-section">
+      <h2 class="section-title">Fun facts</h2>
+      <div class="facts" id="facts"></div>
+    </section>
+
+    <section class="card wide" id="lookup">
+      <h2>Look up a film</h2>
+      <p class="sub">Search titles, directors, series, or notes in the current filter.</p>
+      <input type="search" id="q" placeholder="Try &ldquo;Kubrick&rdquo;, &ldquo;35mm&rdquo;, or &ldquo;Jaws&rdquo;" autocomplete="off">
+      <p class="sub" id="q-count"></p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Film</th><th>Theater</th><th>Dates</th><th>Times</th><th>Extras</th></tr></thead>
+          <tbody id="q-rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>Data from the <a href="https://docs.google.com/spreadsheets/d/1XTy94LDxF2apCt8w-f6lAktS2zYt4ux-_JsuGuCO_HA/edit">LA Theater Tracker</a>,
+      collected every Friday by <a href="https://github.com/gingivere0/tinseltown">TinselTown</a> and refreshed here daily.
+      A listing is one row of the tracker: a film at a theater on a date or run of dates, with its showtimes.</p>
+  </footer>
+
+  <div class="tip" id="tip" role="tooltip" hidden></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
