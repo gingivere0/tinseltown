@@ -1,5 +1,6 @@
 """python -m tinseltown run [--start YYYY-MM-DD] [--only VENUE ...] [--dry-run]
-python -m tinseltown sync   (copy filled-in rows from the Manual tab into Screenings)"""
+python -m tinseltown sync   (copy filled-in rows from the Manual tab into Screenings)
+python -m tinseltown export [--out PATH]   (snapshot the sheet for the stats website)"""
 import argparse
 import csv
 import datetime as dt
@@ -27,7 +28,15 @@ def main(argv=None) -> int:
     run.add_argument("--only", nargs="*", default=[], help="venue names to limit the run to")
     run.add_argument("--dry-run", action="store_true", help="write the CSV but not the sheet")
     sub.add_parser("sync", help="copy filled-in Manual rows into Screenings")
+    export = sub.add_parser("export", help="snapshot the sheet for the stats website")
+    export.add_argument("--out", type=pathlib.Path, default=ROOT / "site" / "data" / "tinseltown.json")
     args = parser.parse_args(argv)
+
+    if args.cmd == "export":
+        from .export import export as export_sheet
+        n = export_sheet(os.environ["SHEET_ID"], os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"], args.out)
+        print(f"{n} screenings written to {args.out}")
+        return 0
 
     if args.cmd == "sync":
         from .sheet import ManualSheet, TrackerSheet

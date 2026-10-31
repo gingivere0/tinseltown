@@ -15,6 +15,22 @@ Google Sheet for review.
 4. The week's results are also saved to `data/listings-<date>.csv`, and the run's summary page lists
    counts per venue, any venue that failed, and the venues to check by hand.
 
+## Stats website
+
+`site/` is a static page of charts and trivia about the tracker (busiest weeks, theaters, most-repeated
+films, showtimes by hour and weekday, formats, events, decades, directors, series, and a film lookup).
+`.github/workflows/site.yml` snapshots the sheet into `site/data/tinseltown.json` with the same service
+account and publishes the folder to GitHub Pages every morning, after each listings run or Manual sync,
+and whenever the site changes. It needs Pages turned on once: **Settings → Pages → Source: GitHub Actions**.
+The Seen and Status columns stay out of the published data.
+
+To work on the site locally, put a snapshot in place and serve the folder:
+
+```
+SHEET_ID=... GOOGLE_SERVICE_ACCOUNT_JSON="$(cat key.json)" python -m tinseltown export
+python -m http.server -d site
+```
+
 ## Setup
 
 | Name | Kind | What it is |
