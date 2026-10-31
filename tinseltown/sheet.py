@@ -228,7 +228,7 @@ class VenueTabs:
                 {"addSheet": {"properties": {"title": v, "gridProperties": {"frozenRowCount": 1}}}}
                 for v in missing]})
             sheets = {ws.title: ws for ws in self.book.worksheets()}
-        self.book.values_batch_clear([f"'{v}'" for v in contents])
+        self.book.values_batch_clear(body={"ranges": [f"'{v}'" for v in contents]})
         header = contents[next(iter(contents))][0]
         self.book.values_batch_update({"valueInputOption": "USER_ENTERED", "data": [
             {"range": f"'{v}'!A1", "values": [header] + [[_cell(c, x) for c, x in zip(header, r)] for r in rows[1:]]}
