@@ -2,135 +2,177 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>TinselTown Stats</title>
   <meta name="description" content="Charts and fun facts about what's playing on Los Angeles movie screens, from the TinselTown tracker.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Limelight&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Limelight&family=Playfair+Display:wght@600;700&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%9E%EF%B8%8F%3C/text%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='7' width='26' height='18' rx='3' fill='%2317162a'/%3E%3Ccircle cx='9' cy='16' r='3' fill='%23f6c75a'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23f6c75a'/%3E%3Ccircle cx='23' cy='16' r='3' fill='%23f6c75a'/%3E%3C/svg%3E">
 </head>
 <body>
+  <a class="skip" href="#main">Skip to the stats</a>
+
   <header class="marquee">
-    <div class="wrap">
+    <div class="wrap marquee-inner">
+      <p class="eyebrow">Now showing in Los Angeles</p>
       <h1>TinselTown</h1>
-      <p class="tagline">What's playing on Los Angeles movie screens, in charts and trivia.</p>
-      <p class="updated" id="updated">Loading the tracker&hellip;</p>
+      <p class="tagline">Every film on the city's screens this year, in charts and trivia.</p>
+      <p class="updated" id="updated" aria-live="polite">Loading the tracker…</p>
     </div>
+    <div class="bulbs" aria-hidden="true"></div>
   </header>
 
-  <nav class="filters" aria-label="Filters">
-    <div class="wrap filter-row">
-      <label>Theater
-        <select id="f-venue"><option value="">All theaters</option></select>
-      </label>
-      <label>When
-        <select id="f-when"><option value="all">All year</option></select>
-      </label>
-      <label class="check"><input type="checkbox" id="f-repertory"> Skip the multiplexes (AMC)</label>
+  <div class="toolbar" id="toolbar">
+    <div class="wrap">
+      <div class="toolbar-top">
+        <button type="button" class="filters-toggle" id="f-toggle" aria-expanded="false" aria-controls="filter-row">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M3 5h18M6 12h12M10 19h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span id="f-summary">Filters</span>
+        </button>
+        <div class="filter-row" id="filter-row" role="group" aria-label="Filters">
+          <label class="field" for="f-venue"><span>Theater</span>
+            <select id="f-venue"><option value="">All theaters</option></select>
+          </label>
+          <label class="field" for="f-when"><span>When</span>
+            <select id="f-when"><option value="all">All year</option></select>
+          </label>
+          <label class="check" for="f-repertory"><input type="checkbox" id="f-repertory"> <span>Hide AMC multiplexes</span></label>
+          <button type="button" class="reset" id="f-reset" hidden>Reset filters</button>
+        </div>
+      </div>
+      <nav class="jump" aria-label="Sections">
+        <a href="#overview">Overview</a>
+        <a href="#coming-up">Coming up</a>
+        <a href="#weeks">Weekly</a>
+        <a href="#theaters">Theaters</a>
+        <a href="#films">Films</a>
+        <a href="#showtimes">Showtimes</a>
+        <a href="#programs">Programs</a>
+        <a href="#facts">Fun facts</a>
+        <a href="#lookup">Search</a>
+      </nav>
     </div>
-  </nav>
+  </div>
 
-  <main class="wrap" id="main">
-    <section class="tiles" id="tiles" aria-label="Headline numbers"></section>
+  <main class="wrap" id="main" aria-busy="true">
+    <section id="overview" class="anchor" aria-label="Headline numbers">
+      <div class="tiles" id="tiles">
+        <div class="tile skeleton"></div><div class="tile skeleton"></div><div class="tile skeleton"></div>
+        <div class="tile skeleton"></div><div class="tile skeleton"></div>
+      </div>
+    </section>
 
-    <section class="card wide" id="specials-card">
-      <h2>Coming up: the good stuff</h2>
-      <p class="sub">Celluloid, Q&amp;As, guests, premieres, and double bills in the next seven days.</p>
+    <section class="card anchor" id="coming-up">
+      <div class="card-head">
+        <div>
+          <h2>Coming up: the good stuff</h2>
+          <p class="sub">Film prints, Q&amp;As, guests, premieres, and double bills in the next seven days.</p>
+        </div>
+      </div>
       <ul class="specials" id="specials"></ul>
       <button type="button" class="more-btn" id="specials-more" hidden>Show all</button>
     </section>
 
-    <div class="grid">
-      <section class="card wide">
-        <div class="card-head">
-          <div>
-            <h2>Week by week</h2>
-            <p class="sub" id="weeks-sub">Weeks run Friday to Thursday, like the tracker.</p>
-          </div>
-          <div class="seg" role="group" aria-label="Weekly measure">
-            <button type="button" data-weeks="films" aria-pressed="true">Films playing</button>
-            <button type="button" data-weeks="listings" aria-pressed="false">New listings</button>
-          </div>
+    <section class="card anchor" id="weeks">
+      <div class="card-head">
+        <div>
+          <h2>Week by week</h2>
+          <p class="sub" id="weeks-sub">Weeks run Friday to Thursday, like the tracker.</p>
         </div>
-        <div class="chart" style="height:280px" id="weeks-box"><canvas id="c-weeks"></canvas></div>
-      </section>
+        <div class="seg" role="group" aria-label="Weekly measure">
+          <button type="button" data-weeks="films" aria-pressed="true">Films playing</button>
+          <button type="button" data-weeks="listings" aria-pressed="false">New listings</button>
+        </div>
+      </div>
+      <div class="chart" style="height:300px" id="weeks-box"><canvas id="c-weeks"></canvas></div>
+    </section>
 
+    <h2 class="section-title anchor" id="theaters">Theaters and films</h2>
+    <div class="grid">
       <section class="card">
-        <h2>Where it's playing</h2>
-        <p class="sub">Listings per theater.</p>
+        <h3>Where it's playing</h3>
+        <p class="sub">Listings per theater. Select a bar to filter to that theater.</p>
         <div class="chart" id="venues-box"><canvas id="c-venues"></canvas></div>
       </section>
 
-      <section class="card">
-        <h2>The repeat offenders</h2>
-        <p class="sub">Films with the most listings. Click one to look it up.</p>
+      <section class="card anchor" id="films">
+        <h3>The repeat offenders</h3>
+        <p class="sub">Films with the most listings. Select a bar to look it up.</p>
         <div class="chart" id="films-box"><canvas id="c-films"></canvas></div>
       </section>
 
       <section class="card">
-        <h2>Wide releases</h2>
+        <h3>Wide releases</h3>
         <p class="sub">Films that played the most different theaters.</p>
         <div class="chart" id="spread-box"><canvas id="c-spread"></canvas></div>
       </section>
 
       <section class="card">
-        <h2>Showtimes</h2>
+        <h3>Decades on screen</h3>
+        <p class="sub" id="decades-sub">Films by release decade.</p>
+        <div class="chart" style="height:280px" id="decades-box"><canvas id="c-decades"></canvas></div>
+      </section>
+    </div>
+
+    <h2 class="section-title anchor" id="showtimes">Showtimes</h2>
+    <div class="grid">
+      <section class="card">
+        <h3>By the hour</h3>
         <p class="sub" id="hours-sub">Every listed showtime, by the hour it starts.</p>
         <div class="chart" style="height:300px" id="hours-box"><canvas id="c-hours"></canvas></div>
       </section>
 
-      <section class="card wide">
-        <h2>When LA goes to the movies</h2>
-        <p class="sub">Showtimes by day of week and hour, for listings on a single date. Darker means busier.</p>
-        <div class="heat" id="heat"></div>
-      </section>
-
       <section class="card">
-        <h2>Formats</h2>
+        <h3>When LA goes to the movies</h3>
+        <p class="sub">Showtimes by day and hour, for listings on a single date. Brighter means busier.</p>
+        <div class="heat-wrap"><div class="heat" id="heat" role="img"></div></div>
+        <div class="legend-ramp" id="heat-legend" aria-hidden="true"></div>
+      </section>
+    </div>
+
+    <h2 class="section-title anchor" id="programs">Programs</h2>
+    <div class="grid">
+      <section class="card">
+        <h3>Formats</h3>
         <p class="sub">From 35mm prints to IMAX, in listings that name a format.</p>
         <div class="chart" id="formats-box"><canvas id="c-formats"></canvas></div>
       </section>
 
       <section class="card">
-        <h2>Special events</h2>
+        <h3>Special events</h3>
         <p class="sub">Listings with something extra going on.</p>
         <div class="chart" id="events-box"><canvas id="c-events"></canvas></div>
       </section>
 
       <section class="card">
-        <h2>Decades on screen</h2>
-        <p class="sub" id="decades-sub">Films by release decade.</p>
-        <div class="chart" style="height:280px" id="decades-box"><canvas id="c-decades"></canvas></div>
+        <h3>Series and festivals</h3>
+        <p class="sub">The programs behind the listings. Select one to see its films.</p>
+        <div class="chart" id="series-box"><canvas id="c-series"></canvas></div>
       </section>
 
       <section class="card">
-        <h2>Directors</h2>
+        <h3>Directors</h3>
         <p class="sub" id="directors-sub">Directors with the most listings.</p>
         <div class="chart" id="directors-box"><canvas id="c-directors"></canvas></div>
       </section>
-
-      <section class="card wide">
-        <h2>Series and festivals</h2>
-        <p class="sub">The programs behind the listings.</p>
-        <div class="chart" id="series-box"><canvas id="c-series"></canvas></div>
-      </section>
     </div>
 
-    <section class="facts-section">
-      <h2 class="section-title">Fun facts</h2>
-      <div class="facts" id="facts"></div>
-    </section>
+    <h2 class="section-title anchor" id="facts">Fun facts</h2>
+    <div class="facts" id="facts-list"></div>
 
-    <section class="card wide" id="lookup">
+    <section class="card anchor" id="lookup">
       <h2>Look up a film</h2>
-      <p class="sub">Search titles, directors, series, or notes in the current filter.</p>
-      <input type="search" id="q" placeholder="Try &ldquo;Kubrick&rdquo;, &ldquo;35mm&rdquo;, or &ldquo;Jaws&rdquo;" autocomplete="off">
-      <p class="sub" id="q-count"></p>
-      <div class="table-wrap">
+      <label class="sub" for="q">Search titles, directors, series, notes, or theaters in the current filter.</label>
+      <div class="search">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input type="search" id="q" placeholder="Try Kubrick, 35mm, or Jaws" autocomplete="off" enterkeyhint="search">
+      </div>
+      <p class="sub" id="q-count" aria-live="polite"></p>
+      <div class="table-wrap" tabindex="0" aria-label="Search results">
         <table>
-          <thead><tr><th>Film</th><th>Theater</th><th>Dates</th><th>Times</th><th>Extras</th></tr></thead>
+          <thead><tr><th scope="col">Film</th><th scope="col">Theater</th><th scope="col">Dates</th><th scope="col">Times</th><th scope="col">Extras</th></tr></thead>
           <tbody id="q-rows"></tbody>
         </table>
       </div>
