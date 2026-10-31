@@ -1,6 +1,7 @@
 name: Copy manual entries
 
-# Every morning, copy rows filled in on the Manual tab into Screenings.
+# Every morning, copy rows filled in on the Manual tab into Screenings, carry edits made on
+# the per-venue tabs back into Screenings, and rewrite the per-venue tabs.
 on:
   schedule:
     - cron: "0 14 * * *"
