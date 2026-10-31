@@ -174,35 +174,62 @@ function displayTitles(rows) {
 }
 function esc(s) { return String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
 function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
-function trunc(s, n = window.innerWidth < 600 ? 18 : 34) { return s.length > n ? s.slice(0, n - 1) + "…" : s; }
+function trunc(s, n = narrow() ? 20 : 32) { return s.length > n ? s.slice(0, n - 1) + "…" : s; }
 
 // ---------- charts ----------
 
+const REDUCED_MOTION = matchMedia("(prefers-reduced-motion: reduce)");
+const narrow = () => window.innerWidth < 600;
+
+// Value labels at the end of each horizontal bar, so ranking charts read without an axis.
+const endLabels = {
+  id: "endLabels",
+  afterDatasetsDraw(chart) {
+    if (chart.options.indexAxis !== "y") return;
+    const { ctx } = chart;
+    const data = chart.data.datasets[0].data;
+    ctx.save();
+    ctx.font = `600 12px ${css("--font-mono") || "monospace"}`;
+    ctx.fillStyle = css("--text-2");
+    ctx.textBaseline = "middle";
+    chart.getDatasetMeta(0).data.forEach((bar, i) => ctx.fillText(fmt(data[i]), bar.x + 6, bar.y));
+    ctx.restore();
+  },
+};
+
 function baseOptions(horizontal) {
   const grid = css("--grid"), text = css("--text-2");
-  const valueAxis = { beginAtZero: true, grid: { color: grid }, border: { display: false }, ticks: { color: text, precision: 0 } };
-  const catAxis = { grid: { display: false }, border: { color: grid }, ticks: { color: text, autoSkip: !horizontal } };
+  const font = { family: css("--font-body"), size: 12 };
+  const valueAxis = horizontal
+    ? { display: false, beginAtZero: true, grace: "12%" }
+    : { beginAtZero: true, grid: { color: grid }, border: { display: false }, ticks: { color: text, precision: 0, font } };
+  const catAxis = {
+    grid: { display: false }, border: { color: grid },
+    ticks: horizontal ? { color: text, autoSkip: false, font } : { color: text, font, maxRotation: 0, autoSkipPadding: 12 },
+  };
   return {
     responsive: true,
     maintainAspectRatio: false,
     indexAxis: horizontal ? "y" : "x",
-    animation: { duration: 250 },
+    animation: REDUCED_MOTION.matches ? false : { duration: 300 },
+    layout: { padding: horizontal ? { right: 8 } : 0 },
     plugins: {
       legend: { display: false },
       tooltip: {
         backgroundColor: css("--surface"), titleColor: css("--text"), bodyColor: css("--text-2"),
         borderColor: css("--border"), borderWidth: 1, padding: 10, displayColors: false,
+        titleFont: { family: css("--font-body"), weight: "700", size: 13 }, bodyFont: { family: css("--font-body"), size: 13 },
       },
     },
     scales: horizontal ? { x: valueAxis, y: catAxis } : { x: catAxis, y: valueAxis },
   };
 }
 
-function barChart(id, labels, values, { horizontal = false, colors, tooltip, onClick, boxId, title } = {}) {
+function barChart(id, labels, values, { horizontal = false, colors, tooltip, onClick, boxId, title, describe } = {}) {
   charts[id]?.destroy();
   const box = boxId ? document.getElementById(boxId) : null;
   if (box) {
-    box.style.height = horizontal ? `${Math.max(120, labels.length * 24 + 40)}px` : (box.dataset.h || box.style.height);
+    box.style.height = horizontal ? `${Math.max(120, labels.length * 28 + 16)}px` : (box.dataset.h || box.style.height);
     box.querySelector(".empty")?.remove();
     box.querySelector("canvas").hidden = false;
   }
@@ -214,18 +241,22 @@ function barChart(id, labels, values, { horizontal = false, colors, tooltip, onC
     opts.onClick = (_, els) => { if (els.length) onClick(els[0].index); };
     opts.onHover = (e, els) => { e.native.target.style.cursor = els.length ? "pointer" : "default"; };
   }
-  charts[id] = new Chart(document.getElementById(id), {
+  const canvas = document.getElementById(id);
+  canvas.setAttribute("role", "img");
+  canvas.setAttribute("aria-label", describe || labels.slice(0, 8).map((l, i) => `${l}: ${fmt(values[i])}`).join("; "));
+  charts[id] = new Chart(canvas, {
     type: "bar",
+    plugins: horizontal ? [endLabels] : [],
     data: {
       labels,
       datasets: [{
         data: values,
-        backgroundColor: colors || css("--series"),
-        hoverBackgroundColor: colors || css("--series"),
+        backgroundColor: colors || css("--data"),
+        hoverBackgroundColor: colors ? colors.map(c => c === css("--data") ? css("--data-hover") : c) : css("--data-hover"),
         borderRadius: 4,
         borderSkipped: "start",
         borderWidth: 0,
-        maxBarThickness: horizontal ? 18 : 40,
+        maxBarThickness: horizontal ? 20 : 40,
         categoryPercentage: 0.85,
         barPercentage: 0.9,
       }],
@@ -258,31 +289,35 @@ function renderTiles(rows, titles) {
   const tiles = [
     [fmt(rows.length), "listings", `${fmt(showtimes)} showtimes spelled out`],
     [fmt(films.size), "different films", `${pct(once, films.size)}% played just once`],
-    [fmt(venues.size), "theaters", ""],
+    [fmt(venues.size), "theaters", `${fmt(new Set(rows.map(r => r.chain)).size)} chains and independents`],
     [fmt(celluloid), "on film", "35mm, 70mm, 16mm, and nitrate"],
-    [fmt(guests), "with Q&As or guests", ""],
+    [fmt(guests), "Q&As and guests", "listings with someone in person"],
   ];
   document.getElementById("tiles").innerHTML = tiles.map(([n, l, h]) =>
-    `<div class="tile"><div class="num">${n}</div><div class="label">${l}</div>${h ? `<div class="hint">${h}</div>` : ""}</div>`).join("");
+    `<div class="tile"><div class="label">${l}</div><div class="num">${n}</div>${h ? `<div class="hint">${h}</div>` : ""}</div>`).join("");
 }
 
 function renderSpecials(rows) {
-  const card = document.getElementById("specials-card");
   const soon = rows.filter(r => r.end >= today && r.start <= today + 6 &&
     (r.formats.some(f => CELLULOID.has(f)) || r.events.some(e => SPECIAL_EVENTS.has(e))))
     .sort((a, b) => Math.max(a.start, today) - Math.max(b.start, today) || (a.times[0] || 0) - (b.times[0] || 0));
-  card.hidden = !soon.length;
   const list = document.getElementById("specials");
   list.classList.remove("open");
   const more = document.getElementById("specials-more");
-  more.hidden = soon.length <= 8;
+  more.hidden = soon.length <= (window.innerWidth <= 760 ? 4 : 8);
   more.textContent = `Show all ${Math.min(soon.length, 40)}`;
+  if (!soon.length) {
+    list.innerHTML = `<li class="none" style="border:0;background:none;padding:0">No film prints or special events are listed for the next seven days in this selection.</li>`;
+    return;
+  }
   list.innerHTML = soon.slice(0, 40).map(r => {
     const when = r.start === r.end ? fmtDay(r.start) : `${fmtDay(Math.max(r.start, today))} to ${fmtDay(r.end)}`;
-    const badges = [...r.formats.filter(f => CELLULOID.has(f)), ...r.events.filter(e => SPECIAL_EVENTS.has(e))];
+    const film = r.formats.filter(f => CELLULOID.has(f)), events = r.events.filter(e => SPECIAL_EVENTS.has(e));
     const title = r.link ? `<a href="${esc(r.link)}" target="_blank" rel="noopener">${esc(r.title)}</a>` : esc(r.title);
-    return `<li><div class="t">${title}</div><div class="m">${esc(r.venue)} · ${when}${r.times.length ? " · " + r.times.map(fmtTime).join(", ") : ""}</div>` +
-      badges.map(b => `<span class="badge">${esc(b)}</span>`).join("") + "</li>";
+    return `<li><span class="when">${when}${r.times.length ? " · " + r.times.map(fmtTime).join(", ") : ""}</span>` +
+      `<span class="t">${title}</span><span class="m">${esc(r.venue)}</span><span class="badges">` +
+      film.map(b => `<span class="badge film">${esc(b)}</span>`).join("") +
+      events.map(b => `<span class="badge">${esc(b)}</span>`).join("") + "</span></li>";
   }).join("");
 }
 
@@ -306,10 +341,11 @@ function renderWeeks(rows) {
     values = weeks.map(w => counts.get(w) || 0);
   }
   const thisWeek = fridayOf(today);
-  const colors = weeks.map(w => w === thisWeek ? css("--accent") : css("--series"));
+  const colors = weeks.map(w => w === thisWeek ? css("--now") : css("--data"));
   const unit = weeksMode === "films" ? "different films" : "new listings";
   barChart("c-weeks", weeks.map(w => fmtDay(w, { month: "short", day: "numeric" })), values, {
     colors, boxId: "weeks-box",
+    describe: `${unit} per week, from ${fmtDay(weeks[0])} to ${fmtDay(weeks[weeks.length - 1])}; peak ${fmt(Math.max(...values))}`,
     tooltip: {
       title: items => `Week of ${fmtDay(weeks[items[0].dataIndex], { month: "long", day: "numeric" })}` +
         (weeks[items[0].dataIndex] === thisWeek ? " (this week)" : ""),
@@ -318,7 +354,7 @@ function renderWeeks(rows) {
   });
   const best = values.indexOf(Math.max(...values));
   document.getElementById("weeks-sub").textContent =
-    `Weeks run Friday to Thursday, like the tracker. Busiest: the week of ${fmtDay(weeks[best], { month: "long", day: "numeric" })}, with ${fmt(values[best])} ${unit}. This week is in orange.`;
+    `Weeks run Friday to Thursday, like the tracker. Busiest: the week of ${fmtDay(weeks[best], { month: "long", day: "numeric" })}, with ${fmt(values[best])} ${unit}.${weeks.includes(thisWeek) ? " This week is marked in red." : ""}`;
 }
 
 function horizontalCounts(id, boxId, entries, unit, opts = {}) {
@@ -328,6 +364,7 @@ function horizontalCounts(id, boxId, entries, unit, opts = {}) {
     tooltip: { label: item => `${fmt(item.raw)} ${unit}` + (opts.extra ? opts.extra(item.dataIndex) : "") },
     title: items => entries[items[0].dataIndex][0],
     onClick: opts.onClick,
+    describe: entries.slice(0, 8).map(([l, n]) => `${l}: ${fmt(n)} ${unit}`).join("; "),
   });
 }
 
@@ -391,15 +428,23 @@ function renderHeat(rows) {
       lo = Math.min(lo, h); hi = Math.max(hi, h); max = Math.max(max, grid[d].get(h));
     }
   }
-  if (!max) { el.innerHTML = `<div class="empty">No single-date showtimes in this selection.</div>`; return; }
+  const legendEl = document.getElementById("heat-legend");
+  if (!max) {
+    el.innerHTML = `<div class="empty">No single-date showtimes in this selection.</div>`;
+    el.style.gridTemplateColumns = "1fr";
+    el.setAttribute("aria-label", "No single-date showtimes in this selection.");
+    legendEl.innerHTML = "";
+    return;
+  }
   const steps = 7;
   const level = n => n ? Math.min(steps, 1 + Math.floor((steps - 1) * Math.sqrt(n / max) + 0.0001)) : 0;
   const cols = hi - lo + 1;
-  el.style.gridTemplateColumns = `40px repeat(${cols}, minmax(22px, 1fr))`;
+  el.style.gridTemplateColumns = `40px repeat(${cols}, minmax(20px, 1fr))`;
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const fullDays = ["Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays", "Sundays"];
   let html = "<div></div>";
-  for (let h = lo; h <= hi; h++) html += `<div class="cl">${(h - lo) % 2 === 0 ? hourLabel(h) : ""}</div>`;
+  const every = cols > 12 ? 3 : 2;
+  for (let h = lo; h <= hi; h++) html += `<div class="cl">${(h - lo) % every === 0 ? hourLabel(h) : ""}</div>`;
   days.forEach((name, d) => {
     html += `<div class="rl">${name}</div>`;
     for (let h = lo; h <= hi; h++) {
@@ -408,11 +453,10 @@ function renderHeat(rows) {
     }
   });
   el.innerHTML = html;
-  const legend = document.createElement("div");
-  legend.className = "legend-ramp";
-  legend.style.gridColumn = "1 / -1";
-  legend.innerHTML = "Fewer " + Array.from({ length: steps + 1 }, (_, i) => `<span class="sw" style="background:var(--heat-${i})"></span>`).join("") + " More";
-  el.append(legend);
+  let peak = [0, lo, 0];
+  grid.forEach((m, d) => m.forEach((n, h) => { if (n > peak[2]) peak = [d, h, n]; }));
+  el.setAttribute("aria-label", `Showtimes by day and hour. Busiest slot: ${fullDays[peak[0]]} at ${fmtTime(peak[1] * 60)}, with ${fmt(peak[2])} showtimes.`);
+  legendEl.innerHTML = "Fewer" + Array.from({ length: steps + 1 }, (_, i) => `<span class="sw" style="background:var(--heat-${i})"></span>`).join("") + "More";
 }
 
 function renderFormats(rows) {
@@ -475,7 +519,7 @@ function renderSeries(rows) {
 function renderFacts(rows, titles) {
   const facts = [];
   const add = (k, v, d) => facts.push(`<div class="fact"><div class="k">${k}</div><div class="v">${v}</div><div class="d">${d}</div></div>`);
-  if (!rows.length) { document.getElementById("facts").innerHTML = ""; return; }
+  if (!rows.length) { document.getElementById("facts-list").innerHTML = ""; return; }
 
   // Most-traveled film
   const venuesPer = new Map();
@@ -575,7 +619,7 @@ function renderFacts(rows, titles) {
     add("Oldest film", esc(old.title), `From ${old.year}, at ${esc(old.venue)}.`);
   }
 
-  document.getElementById("facts").innerHTML = facts.join("");
+  document.getElementById("facts-list").innerHTML = facts.join("");
 }
 
 // ---------- lookup ----------
@@ -585,15 +629,15 @@ function lookup(text) {
   const q = document.getElementById("q");
   q.value = text;
   renderLookup();
-  document.getElementById("lookup").scrollIntoView({ behavior: "smooth", block: "start" });
+  document.getElementById("lookup").scrollIntoView({ behavior: REDUCED_MOTION.matches ? "auto" : "smooth", block: "start" });
 }
 
 function renderLookup() {
   const q = document.getElementById("q").value.trim().toLowerCase();
   const body = document.getElementById("q-rows"), count = document.getElementById("q-count");
   if (!q) {
-    body.innerHTML = "";
-    count.textContent = `${fmt(lookupRows.length)} listings in the current filter.`;
+    body.innerHTML = `<tr><td colspan="5" class="table-empty">Type above to search ${fmt(lookupRows.length)} listings, or select a bar in the film charts.</td></tr>`;
+    count.textContent = "";
     return;
   }
   const hits = lookupRows.filter(r =>
@@ -601,13 +645,17 @@ function renderLookup() {
     (r.notes || "").toLowerCase().includes(q) || r.formats.some(f => f.toLowerCase() === q) || r.venue.toLowerCase().includes(q))
     .sort((a, b) => a.start - b.start);
   count.textContent = `${fmt(hits.length)} listing${hits.length === 1 ? "" : "s"}${hits.length > 300 ? ", showing the first 300" : ""}.`;
+  if (!hits.length) {
+    body.innerHTML = `<tr><td colspan="5" class="table-empty">Nothing matches “${esc(q)}”. Try part of a title, or clear the theater and date filters.</td></tr>`;
+    return;
+  }
   body.innerHTML = hits.slice(0, 300).map(r => {
     const dates = r.start === r.end ? fmtDay(r.start) : `${fmtDay(r.start)} to ${fmtDay(r.end)}`;
     const extras = [...r.formats, ...r.events, r.series].filter(Boolean).map(esc).join(" · ");
     const title = r.link ? `<a href="${esc(r.link)}" target="_blank" rel="noopener">${esc(r.title)}</a>` : esc(r.title);
     const meta = [r.year, r.director].filter(Boolean).join(", ");
     return `<tr><td class="film">${title}${meta ? ` <span class="dir">(${esc(meta)})</span>` : ""}</td><td>${esc(r.venue)}${r.screen ? `<br><span class="dir">${esc(r.screen)}</span>` : ""}</td>` +
-      `<td>${dates}</td><td>${esc(r.timesText)}</td><td>${extras}</td></tr>`;
+      `<td class="nowrap">${dates}</td><td>${esc(r.timesText)}</td><td>${extras}</td></tr>`;
   }).join("");
 }
 
@@ -631,6 +679,7 @@ function setupTip() {
 // ---------- main ----------
 
 function render() {
+  updateFilterSummary();
   const rows = filtered();
   const titles = displayTitles(rows);
   lookupRows = rows;
@@ -650,37 +699,111 @@ function render() {
   renderLookup();
 }
 
+// ---------- filters panel, section nav ----------
+
+function updateFilterSummary() {
+  const v = document.getElementById("f-venue"), w = document.getElementById("f-when");
+  const rep = document.getElementById("f-repertory").checked;
+  const parts = [];
+  if (v.value) parts.push(v.selectedOptions[0].text.replace(/^All /, ""));
+  if (w.value !== "all") parts.push(w.selectedOptions[0].text);
+  if (rep) parts.push("No AMC");
+  document.getElementById("f-reset").hidden = !parts.length;
+  document.getElementById("f-summary").innerHTML = parts.length
+    ? `<span class="dot" aria-hidden="true"></span> ${esc(parts.join(" · "))}` : "Filters";
+}
+
+function setupToolbar() {
+  const toggle = document.getElementById("f-toggle"), row = document.getElementById("filter-row");
+  toggle.addEventListener("click", () => {
+    const open = !row.classList.contains("open");
+    row.classList.toggle("open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+  document.getElementById("f-reset").addEventListener("click", () => {
+    document.getElementById("f-venue").value = "";
+    document.getElementById("f-when").value = "all";
+    document.getElementById("f-repertory").checked = false;
+    saveParams();
+    render();
+  });
+  const links = [...document.querySelectorAll(".jump a")];
+  links.forEach(a => a.addEventListener("click", e => {
+    // Close the filter panel first so the section lands below the shorter toolbar.
+    e.preventDefault();
+    row.classList.remove("open");
+    toggle.setAttribute("aria-expanded", "false");
+    document.querySelector(a.getAttribute("href")).scrollIntoView({ behavior: REDUCED_MOTION.matches ? "auto" : "smooth" });
+    history.replaceState(null, "", location.search + a.getAttribute("href"));
+  }));
+  const targets = links.map(a => document.querySelector(a.getAttribute("href")));
+  const mark = () => {
+    const line = document.getElementById("toolbar").getBoundingClientRect().bottom + 24;
+    let current = 0;
+    targets.forEach((t, i) => { if (t.getBoundingClientRect().top <= line) current = i; });
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) current = targets.length - 1;
+    if (links[current].getAttribute("aria-current") === "true") return;
+    links.forEach((a, i) => a.setAttribute("aria-current", String(i === current)));
+    const nav = links[current].parentElement, a = links[current];
+    if (a.offsetLeft < nav.scrollLeft || a.offsetLeft + a.offsetWidth > nav.scrollLeft + nav.clientWidth) {
+      nav.scrollLeft = a.offsetLeft - 16;
+    }
+  };
+  let ticking = false;
+  addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { mark(); ticking = false; });
+  }, { passive: true });
+  mark();
+}
+
+async function loadData() {
+  const res = await fetch("data/tinseltown.json", { cache: "no-cache" });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
 async function main() {
   today = dayNum(new Intl.DateTimeFormat("en-CA", { timeZone: "America/Los_Angeles" }).format(new Date()));
   const updated = document.getElementById("updated");
   let data;
   try {
-    const res = await fetch("data/tinseltown.json", { cache: "no-cache" });
-    if (!res.ok) throw new Error(res.status);
-    data = await res.json();
+    data = await loadData();
   } catch (err) {
-    updated.textContent = "Couldn't load the tracker data. Try reloading in a minute.";
+    updated.textContent = "Couldn't load the tracker data.";
+    document.getElementById("tiles").innerHTML =
+      `<div class="empty" style="grid-column:1/-1">The listings didn't load. Check your connection, then <button type="button" class="more-btn" id="retry">Try again</button></div>`;
+    document.getElementById("retry").addEventListener("click", () => location.reload());
     return;
   }
   load(data);
   const when = new Date(data.updated);
   updated.textContent = `${fmt(ALL.length)} listings · updated ${when.toLocaleString("en-US", {
     timeZone: "America/Los_Angeles", month: "long", day: "numeric", hour: "numeric", minute: "2-digit" })} Pacific`;
-  Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
+  Chart.defaults.font.family = css("--font-body");
   setupFilters();
+  setupToolbar();
   setupTip();
   document.querySelectorAll("[data-weeks]").forEach(b => b.addEventListener("click", () => {
     weeksMode = b.dataset.weeks;
     document.querySelectorAll("[data-weeks]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     renderWeeks(filtered());
   }));
-  document.getElementById("q").addEventListener("input", renderLookup);
+  let typing;
+  document.getElementById("q").addEventListener("input", () => { clearTimeout(typing); typing = setTimeout(renderLookup, 120); });
   document.getElementById("specials-more").addEventListener("click", e => {
     document.getElementById("specials").classList.add("open");
     e.target.hidden = true;
   });
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", render);
+  new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  let wasNarrow = narrow();
+  addEventListener("resize", () => { if (narrow() !== wasNarrow) { wasNarrow = narrow(); render(); } });
   render();
+  document.getElementById("main").setAttribute("aria-busy", "false");
+  // Fonts change label widths, so redraw the charts once they arrive.
+  document.fonts?.ready.then(render);
 }
 
 main();
